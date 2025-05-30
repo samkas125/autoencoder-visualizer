@@ -7,6 +7,7 @@ from PIL import Image
 import numpy as np
 from torchvision import transforms
 from sklearn.manifold import TSNE
+from random import randrange
 import torch
 torch.classes.__path__ = []
 
@@ -42,7 +43,7 @@ model, device = load_model(latent_dim=latent_dim, model_path=model_path)
 _, test_loader = get_mnist_dataloaders(batch_size=128)
 
 # --- Main Options ---
-tab1, tab2, tab3 = st.tabs(["🔁 Reconstructions", "🧬 Latent Space", "📤 Upload Image"])
+tab1, tab2, tab3 = st.tabs(["Reconstructions", "Latent Space", "Upload Image"])
 
 # --- Tab 1: Show Reconstructions ---
 with tab1:
@@ -55,10 +56,11 @@ with tab1:
 
     num_images = 6
     fig, axes = plt.subplots(2, num_images, figsize=(num_images * 2, 4))
+    x = randrange(10)
     for i in range(num_images):
-        axes[0, i].imshow(images[i][0].cpu(), cmap='gray')
+        axes[0, i].imshow(images[i + x][0].cpu(), cmap='gray')
         axes[0, i].axis('off')
-        axes[1, i].imshow(recon[i][0].cpu(), cmap='gray')
+        axes[1, i].imshow(recon[i + x][0].cpu(), cmap='gray')
         axes[1, i].axis('off')
     axes[0, 0].set_ylabel("Original", fontsize=14)
     axes[1, 0].set_ylabel("Reconstructed", fontsize=14)
